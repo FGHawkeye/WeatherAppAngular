@@ -4,9 +4,10 @@ using System.Text;
 
 namespace Domain.Dto
 {
-    class CountryDto
+    public class CountryDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string ApiCode { get; set; }
     }
 }

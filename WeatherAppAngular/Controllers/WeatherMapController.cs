@@ -1,24 +1,32 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using WeatherAppAngular.Services;
 
 namespace WeatherAppAngular.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class WeatherMapController : ControllerBase
     {
+        private readonly IWeatherService _weatherService;
+        private readonly ICityService _cityService;
+        private readonly ICountryService _countryService;
+        public WeatherMapController(IWeatherService weatherService, ICityService cityService, ICountryService countryService)
+        {
+            _cityService = cityService;
+            _weatherService = weatherService;
+            _countryService = countryService;
+        }
 
         [HttpGet]
-        public WeatherForecast Get()
+        public IActionResult GetActualWeatherMap(int cityId, bool addHistorical)
         {
-            return new WeatherForecast{
-                Summary = "test",
-                TemperatureC = 20,
-                Date =new DateTime()
-            };
+            var city = _cityService.GetCity(cityId);
+            var country = _countryService.GetCountry(); //si hubiera mas paises, deberia pasarsele un id desde el front
+            var weather = _weatherService.GetActualWeatherMap(city.Name, country.ApiCode);
+            weather.City = city;
+            weather.Country = country;
+
+            return Ok(weather);     
         }
     }
 }

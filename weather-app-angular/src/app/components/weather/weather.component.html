@@ -1,30 +1,31 @@
 <div class="container-fluid py-4 px-4">
     <div class="row">
         <div class="col-4">
-            <select name="select" class="form-control dropdown">
-                <option value="value1"selected>Seleccione la ciudad</option>
-                <option value="value2">Value 2</option>
-                <option value="value3">Value 3</option>
+            <select name="select" class="form-control dropdown" [(ngModel)]="selectedCity">
+                <option value=""selected>Seleccione la ciudad</option>
+                <option *ngFor="let city of cities" [ngValue]="city.id">{{city.name}}</option>
               </select>
         </div>
         <div class="col-2">
             <div class="custom-control custom-checkbox pt-2">
-                <input type="checkbox" class="custom-control-input" id="customCheck1">
-                <label class="custom-control-label" for="customCheck1">Incluir histórico</label>
+                <input type="checkbox" class="custom-control-input" id="addHistorical" [(ngModel)]="addHistorical">
+                <label class="custom-control-label" for="addHistorical">Incluir histórico</label>
             </div>
         </div>
         <div class="col">
-            <button class="btn btn-primary">Consultar</button>
+            <button class="btn btn-primary" (click)="getActualWeatherMap()">Consultar</button>
         </div>
     </div>
     <div class="row mt-4">
         <div class="col">
-            <p>Ciudad: Buenos Aires, Argentina</p>
+            <p *ngIf="actualWeatherMap != null">Ciudad: {{actualWeatherMap.city.name}}, {{actualWeatherMap.country.name}}</p>
+            <p *ngIf="actualWeatherMap == null">Ciudad: Seleccione una ciudad y use el boton consultar</p>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <p>Clima: 31,6° - Sensacion Termina: 33°</p>
+            <p *ngIf="actualWeatherMap != null">Clima: {{actualWeatherMap.temperature}}° - Sensación Termica: {{actualWeatherMap.thermalSensation}}°</p>
+            <p *ngIf="actualWeatherMap == null">Clima: Seleccione una ciudad y use el boton consultar</p>
         </div>
     </div>
     <div class="row mt-2">

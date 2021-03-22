@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { environment } from 'src/environments/environment';
-import { HistoricalWeather } from '../models/HistoricalWeather';
+import { HistoricalWeather } from '../models/historicalWeather';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -13,7 +13,11 @@ export class WeatherService {
 
   constructor(private http: HttpClient) { }
 
-  getActualWeatherMap(cityId: number, addHistorical: boolean): Observable<HistoricalWeather>{
-    return this.http.get<HistoricalWeather>(`${this.url}/weathermap/GetActualWeatherMap?cityId=${cityId}&addHistorical=${addHistorical}`);
+  getActualWeatherMap(cityId: number): Observable<HistoricalWeather>{
+    return this.http.get<HistoricalWeather>(`${this.url}/weathermap/GetActualWeatherMap?cityId=${cityId}`);
+  }
+
+  getHistoricalWeather(cityId: number) : Observable<HistoricalWeather[]>{
+    return this.http.get<HistoricalWeather[]>(`${this.url}/weathermap/GetHistoricalWeather?cityId=${cityId}`);
   }
 }

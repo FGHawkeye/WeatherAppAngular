@@ -16,6 +16,8 @@ namespace WeatherAppAngular.Data
             CreateMap<CityDto, City>();
             CreateMap<Country, CountryDto>();
             CreateMap<CountryDto, Country>();
+            CreateMap<HistoricalWeather, HistoricalWeatherDto>();
+            CreateMap<HistoricalWeatherDto, HistoricalWeather>();
         }
     }
 }

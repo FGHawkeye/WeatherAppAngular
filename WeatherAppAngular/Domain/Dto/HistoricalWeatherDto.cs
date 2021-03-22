@@ -6,8 +6,8 @@ namespace Domain.Dto
 {
     public class HistoricalWeatherDto
     {
-        public CountryDto Country { get; set; }
-        public CityDto City { get; set; }
+        public virtual CountryDto Country { get; set; }
+        public virtual CityDto City { get; set; }
         public double Temperature { get; set; }
         public double ThermalSensation { get; set; }
     }

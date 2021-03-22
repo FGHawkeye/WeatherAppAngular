@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { City } from 'src/app/models/City';
-import { HistoricalWeather } from 'src/app/models/HistoricalWeather';
+import { City } from 'src/app/models/city';
+import { HistoricalWeather } from 'src/app/models/historicalWeather';
 import { CityService } from 'src/app/services/city.service';
 import { WeatherService } from 'src/app/services/weather.service';
 
@@ -15,13 +15,18 @@ export class WeatherComponent implements OnInit {
   selectedCity: string ="";
   addHistorical: boolean = false;
   actualWeatherMap: HistoricalWeather;
+  historicalWeather: HistoricalWeather[];
+  showMessage: boolean = false;
   constructor(private weatherService: WeatherService, private cityService: CityService) { }
 
   ngOnInit(): void {
     this.loadCities();
-    /*this.weatherService.getActualWeatherMap().subscribe(
-      res => console.log(res)
-    );*/
+  }
+
+  loadHistoricalWeather() {
+    this.weatherService.getHistoricalWeather(+this.selectedCity).subscribe(
+      res => this.historicalWeather = res
+    );
   }
 
   loadCities(){
@@ -31,9 +36,26 @@ export class WeatherComponent implements OnInit {
   }
 
   getActualWeatherMap(){
-    this.weatherService.getActualWeatherMap(+this.selectedCity, this.addHistorical).subscribe(
-      res => this.actualWeatherMap = res
-    );
+    if(+this.selectedCity != 0){
+      this.showLoadScreen(true);
+
+      this.showMessage = false;
+      this.weatherService.getActualWeatherMap(+this.selectedCity).subscribe(
+        res => {
+          this.actualWeatherMap = res;
+          if(this.addHistorical)
+            this.loadHistoricalWeather();
+          this.showLoadScreen(false);
+        });
+    }
+    else
+      this.showMessage = true;
+  }
+  showLoadScreen(show: boolean) {
+    if(show)
+      document.getElementById("overlay").style.display = "block";
+    else
+      document.getElementById("overlay").style.display = "none";
   }
 
 }
